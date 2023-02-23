@@ -36,7 +36,7 @@
         $("." + sq + " img").hide();
         d.resolve();
 
-      }, (t1+t2)*speedMult[difficulty]);
+      }, t2+t1*speedMult[difficulty]);
 
       return d.promise();
 
@@ -61,6 +61,7 @@
             count = moleNum;
 
             $(".start").prop("disabled", false);
+            $(".radio").attr("disabled", false);
 
             hiScore = Math.max(hiScore, score);
             score = 0;
@@ -74,7 +75,7 @@
 
         });
 
-      }, (t1+t2)*speedMult[difficulty]+50);
+      }, t2+t1*speedMult[difficulty]+50);
 
     }
 
@@ -111,8 +112,10 @@
       });
 
       $(".start").click(function(){
-        $(".start").prop("disabled", true);
         $(".score h2").html("Score: 0");
+        $(".start").prop("disabled", true);
+        $(".radio").attr("disabled",true);
+
         gameInterval();
 
       });
@@ -172,7 +175,8 @@
       width: 430px;
       margin-left: auto;
       margin-right: auto;
-      border: 0px transparent;
+      background-color: 1px black;
+      border: 1px solid;
       border-radius: 25%;
 
     }
