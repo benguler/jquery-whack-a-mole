@@ -1,0 +1,245 @@
+<!doctype html>
+
+<html>
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+  <script>
+    const squares = ["sq1", "sq2", "sq3", "sq4", "sq5", "sq6", "sq7", "sq8", "sq9", "sq10", "sq11", "sq12", "sq13", "sq14", "sq15", "sq16",];
+    const t1 = 1000;
+    const t2 = 1000;
+    const moleNum = 12;
+
+    var score = 0;
+    var hiScore = 0;
+    var r = 0;
+    var sq = "";
+    var difficulty = 0;
+    var speedMult = [1.5, 1, 0.7];
+    var scoreMult = [1, 2, 4];
+
+    var wait = false;
+
+    const showMole = () => {
+      var d = $.Deferred();
+      var promise = null;
+
+      setTimeout(() => {
+        $("." + sq + " img").show();
+
+      }, t1*speedMult[difficulty]);
+
+      setTimeout(() => {
+        $("." + sq + " img").hide();
+        d.resolve();
+
+      }, (t1+t2)*speedMult[difficulty]);
+
+      return d.promise();
+
+    }
+
+    const gameInterval = () =>{
+      let count = moleNum;
+
+      r = Math.floor(Math.random() * 16);
+      sq = squares[r];
+
+      let interval = window.setInterval(() => {
+        $.when(showMole()).then(() => {
+          count--;
+
+          if(count > 0){
+            $("."+sq).removeClass("clicked");
+            r = Math.floor(Math.random() * 16);
+            sq = squares[r];
+
+          }else{
+            count = moleNum;
+
+            $(".start").prop("disabled", false);
+
+            hiScore = Math.max(hiScore, score);
+            score = 0;
+            $(".hiScore h2").html("High Score: " + hiScore);
+
+            sq = "";
+
+            clearInterval(interval);
+
+          }
+
+        });
+
+      }, (t1+t2)*speedMult[difficulty]+50);
+
+    }
+
+    $(document).ready(function(){
+      $(".radio").click(function(){
+        $(".start").prop("disabled", false);
+
+      });
+
+      $(".easy").click(function(){
+        difficulty = 0;
+
+      });
+
+      $(".medium").click(function(){
+        difficulty = 1;
+
+      });
+
+      $(".hard").click(function(){
+        difficulty = 2;
+
+      });
+
+      $(".game").click(function(){
+        if($(this).hasClass(sq) && !$(this).hasClass("clicked")){
+          score+=10*scoreMult[difficulty];
+          $(".score h2").html("Score: " + score);
+          $("." + sq + " img").hide();
+          $(this).addClass("clicked");
+
+        }
+
+      });
+
+      $(".start").click(function(){
+        $(".start").prop("disabled", true);
+        $(".score h2").html("Score: 0");
+        gameInterval();
+
+      });
+
+    });
+
+
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #B3A769;
+
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 70px;
+
+    }
+
+    h2 {
+      text-align: center;
+
+    }
+
+    img {
+      margin-top: 10px;
+      height: 80px;
+      width: 80px;
+
+    }
+
+    .game {
+      height: 100px;
+      width: 100px;
+      border: 1px solid;
+      border-radius: 50%;
+      background-color: black;
+      text-align: center;
+
+    }
+
+    .start {
+      margin-top:10px;
+      height: 75px;
+      width:400px;
+      border: 0px transparent;
+      font-size: 40px;
+
+    }
+
+    #board {
+      background-color: #E8E0B6;
+      padding:5px;
+      width: 430px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #start {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+
+    }
+
+    #difficulty {
+      text-align: center;
+      margin-top: 10px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 30px;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+  <h1>Whack-A-Mole</h1>
+
+  <div class="score"><h2>Score: 0</h2></div>
+  <div class="hiScore"><h2>High Score: 0</h2></div>
+
+  <div id="board">
+    <table>
+      <tr>
+        <td><div class="game sq1"><img src="./img/mole.png" class="img1" hidden></img></div></td>
+        <td><div class="game sq2"><img src="./img/mole.png" class="img2" hidden></div></td>
+        <td><div class="game sq3"><img src="./img/mole.png" class="img3" hidden></div></td>
+        <td><div class="game sq4"><img src="./img/mole.png" class="img4" hidden></div></td>
+      <tr>
+
+      <tr>
+        <td><div class="game sq5"><img src="./img/mole.png" class="img5" hidden></div></td>
+        <td><div class="game sq6"><img src="./img/mole.png" class="img6" hidden></div></td>
+        <td><div class="game sq7"><img src="./img/mole.png" class="img7" hidden></div></td>
+        <td><div class="game sq8"><img src="./img/mole.png" class="img8" hidden></div></td>
+      <tr>
+
+      <tr>
+        <td><div class="game sq9"><img src="./img/mole.png" class="img9" hidden></div></td>
+        <td><div class="game sq10"><img src="./img/mole.png" class="img10" hidden></div></td>
+        <td><div class="game sq11"><img src="./img/mole.png" class="img11" hidden></div></td>
+        <td><div class="game sq12"><img src="./img/mole.png" class="img12" hidden></div></td>
+      <tr>
+
+      <tr>
+        <td><div class="game sq13"><img src="./img/mole.png" class="img13" hidden></div></td>
+        <td><div class="game sq14"><img src="./img/mole.png" class="img14" hidden></div></td>
+        <td><div class="game sq15"><img src="./img/mole.png" class="img15" hidden></div></td>
+        <td><div class="game sq16"><img src="./img/mole.png" class="img16" hidden></div></td>
+      <tr>
+    </table>
+  </div>
+
+  <div id="start"><button class="start" disabled>Start</button></div>
+
+  <div id="difficulty">
+    <form>
+      <input type="radio" class="radio easy" id="easy" name="difficulty" value="Easy"> <label for="easy">Easy</label>
+      <input type="radio" class="radio medium" id="medium" name="difficulty" value="Medium"> <label for="medium">Medium</label>
+      <input type="radio" class="radio hard" id="hard" name="difficulty" value="Hard"> <label for="hard">Hard</label>
+    </form>
+  </div>
+
+</body>
+
+</html>
