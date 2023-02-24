@@ -21,8 +21,6 @@
     var speedMult = [1.5, 1, 0.7];
     var scoreMult = [1, 2, 4];
 
-    var wait = false;
-
     const showMole = () => {
       var d = $.Deferred();
       var promise = null;
@@ -30,13 +28,13 @@
       setTimeout(() => {
         $("." + sq + " img").show();
 
-      }, t1*speedMult[difficulty]);
+      }, t1);
 
       setTimeout(() => {
         $("." + sq + " img").hide();
         d.resolve();
 
-      }, t2+t1*speedMult[difficulty]);
+      }, t1+t2*speedMult[difficulty]);
 
       return d.promise();
 
@@ -75,7 +73,7 @@
 
         });
 
-      }, t2+t1*speedMult[difficulty]+50);
+      }, t1+t2*speedMult[difficulty]+50);
 
     }
 
